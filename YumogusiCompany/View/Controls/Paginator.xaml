@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="YumogusiCompany.View.Controls.Paginator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YumogusiCompany.View.Controls"
+             xmlns:models="clr-namespace:YumogusiCompany.Model"
+             mc:Ignorable="d"
+             MinHeight="25" MaxHeight="25"
+             MinWidth="151" MaxWidth="151">
+
+    <UserControl.Resources>
+        <Style x:Key="btn" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="10"/>
+            <Setter Property="FontFamily" Value="TW Cen MT"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+
+            <!--<Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button" x:Name="btnClose">
+                        
+                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Button.Content" Value="Your Text">
+                                </Setter>
+                            </Trigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard >
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="#A163F5"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="Transparent"/>
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#A163F5"/>
+                </Trigger>
+            </Style.Triggers>-->
+        </Style>
+        <Style x:Key="lst" TargetType="{x:Type ListView}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="MinWidth" Value="12"/>
+            <Setter Property="MaxWidth" Value="122"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            
+        </Style>
+        <Style x:Key="btnSelect" TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#d3d3d3"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="MinWidth" Value="10"/>
+            <Setter Property="FontFamily" Value="TW Cen MT"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button Command="{Binding GoFirstPage}" Style="{StaticResource btn}" Content="≪"/>
+        <Button Command="{Binding GoPreviousPage}" Style="{StaticResource btn}" Content="&lt;"/>
+
+        <ListView x:Name="ls" Style="{StaticResource lst}" ItemsSource="{Binding PagesDisplayed}">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:Page}">
+                    <Button x:Name="btnPage" Command="{Binding Select}" Style="{StaticResource btn}" Content="{Binding Number}" Margin="-2,0"/>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="Style" TargetName="btnPage" Value="{StaticResource btnSelect}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <Button Command="{Binding GoNextPage}" Style="{StaticResource btn}" Content=">"/>
+        <Button Command="{Binding GoLastPage}" Style="{StaticResource btn}" Content="≫"/>
+    </StackPanel>
+</UserControl>
