@@ -11,7 +11,7 @@
         xmlns:Controls="clr-namespace:YumogusiCompany.View.Controls"
         x:Class="YumogusiCompany.View.ListOfProducts"
         mc:Ignorable="d"
-        Title="ListOfProducts"
+        Title="Продукты"
         MinHeight="300" MinWidth="500"
         Height="450" Width="800">
 

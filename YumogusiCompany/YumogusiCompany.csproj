@@ -5,6 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\pngwing.com.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,10 @@
 
   <ItemGroup>
     <None Remove="Resources\none_picture_logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\pngwing.com.ico" />
   </ItemGroup>
 
   <ItemGroup>
