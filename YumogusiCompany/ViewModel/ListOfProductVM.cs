@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using YumogusiCompany.Model;
+using YumogusiCompany.Model.Command;
 using YumogusiCompany.Model.DataModel;
+using YumogusiCompany.ViewModel.Abstract;
 
 namespace YumogusiCompany.ViewModel
 {
-    internal class ListOfProductVM : NotifyPropertyChanged
+    internal class ListOfProductVM : NotifyPropertyChanged, IVM
     {
         private readonly Repository _repository;
 
         public ListOfProductVM()
         {
-            _repository = new Repository();
+            _repository = Repository.GetInstance();
             _pages = new ObservableCollection<Page>() { new(1) { IsSelected = true } };
             Page.Selected += SelectPage;
         }
@@ -208,6 +211,69 @@ namespace YumogusiCompany.ViewModel
             CurrentPage = selected.Number;
 
         #endregion
+        #endregion
+        #region Modal window list
+
+        public Product? _selectedItemList;
+        public Product? SelectedItemList
+        {
+            get => _selectedItemList;
+            set
+            {
+                _selectedItemList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand? _add;
+        private RelayCommand? _edit;
+        private RelayCommand? _delete;
+
+        public RelayCommand AddOpen
+        {
+            get
+            {
+                return _add ??= new ModalWindowOpen(new AddProductVM());
+            }
+        }
+        public RelayCommand EditOpen
+        {
+            get
+            {
+                if (SelectedItemList is null)
+                {
+                    MessageBox.Show("Продукт не выбран");
+                    return null;
+                }
+                else
+                    return _edit ??= new ModalWindowOpen(new EditProductVM(SelectedItemList));
+            }
+        }
+        public RelayCommand Delete
+        {
+            get
+            {
+                return _delete ??= new RelayCommand(obj =>
+                {
+                    var dialogResult = MessageBox.Show("Вы хотите удалить выбранный элемент?", "Уведомление", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                    if (SelectedItemList is null)
+                    {
+                        MessageBox.Show("Продукт не выбран", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        if (dialogResult == MessageBoxResult.Yes)
+                        {
+                            _repository.Remove(SelectedItemList);
+                            MessageBox.Show("Продукт удален", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
+                            OnPropertyChanged("Products");
+                        }
+                    }
+                });
+            }
+        }
+
         #endregion
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace YumogusiCompany.Model
+namespace YumogusiCompany.Model.Command
 {
     internal class RelayCommand : ICommand
     {
-        private readonly Action<object> _execute;
-        private readonly Func<object, bool>? _canExecute;
+        protected Action<object>? _execute;
+        protected Func<object, bool>? _canExecute;
+
+        protected RelayCommand() { }
 
         public RelayCommand(Action<object> execute, Func<object, bool>? canExecute = null)
         {

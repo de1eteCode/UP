@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using YumogusiCompany.Core;
+using YumogusiCompany.View;
+using YumogusiCompany.ViewModel;
 
 namespace YumogusiCompany
 {
@@ -13,5 +10,24 @@ namespace YumogusiCompany
     /// </summary>
     public partial class App : Application
     {
+        private ListOfProductVM? _mainVM;
+        public DisplayRootRegistrary DisplayRootRegistrary = new DisplayRootRegistrary();
+
+        public App()
+        {
+            DisplayRootRegistrary.RegisterWindowType<ListOfProductVM, ListOfProducts>();
+            DisplayRootRegistrary.RegisterWindowType<AddProductVM, AddProduct>();
+            DisplayRootRegistrary.RegisterWindowType<EditProductVM, EditProduct>();
+        }
+
+        protected async override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            _mainVM = new ListOfProductVM();
+            await DisplayRootRegistrary.ShowModalPresentation(_mainVM);
+
+            Shutdown();
+        }
     }
 }

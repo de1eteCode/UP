@@ -1,4 +1,5 @@
 ﻿using System;
+using YumogusiCompany.Model.Command;
 
 namespace YumogusiCompany.Model
 {

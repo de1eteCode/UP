@@ -1,15 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using YumogusiCompany.Model.DataModel;
 
 namespace YumogusiCompany.Model
 {
     internal class Repository
     {
+        #region Singleton
+        private static object _locker = new object();
+        
+        private static Repository? _repository;
+        public static Repository GetInstance()
+        {
+            lock (_locker)
+            {
+                if (_repository is null)
+                    _repository = new Repository();
+                return _repository;
+            }
+        }
+
+        #endregion
+
+
         private readonly List<Category> _categories = new();
         private IEnumerable<Product> _products;
 
-        public Repository()
+        private Repository()
         {
             CreateCategory("Бытовая техника");
             CreateCategory("Все для ванной");
@@ -80,6 +98,18 @@ namespace YumogusiCompany.Model
 
             category.Products = products;
             _categories.Add(category);
+
+        }
+
+        public void Add(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(Product product)
+        {
+            //var cat = Categories.Where(category => category.Products.Where(prod => prod.Id == product.Id).FirstOrDefault() != null).FirstOrDefault();
+            //cat.Products.Remove(product);
         }
     }
 }
